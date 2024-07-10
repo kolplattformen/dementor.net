@@ -118,8 +118,51 @@ content = await response.Content.ReadAsStringAsync();
 
 
 // NOTIFICATIONS
-
 response = await client.PostAsync("https://hub.infomentor.se/NotificationApp/NotificationApp/appData", null);
+//response = await client.PostAsync("https://hub.infomentor.se/NotificationApp/NotificationApp/GetNotifications", null);
 var notificationsJson = await response.Content.ReadAsStringAsync();
+
+// NEWS
+response = await client.PostAsync("https://hub.infomentor.se/Communication/News/GetNewsList", null);
+var newsListJson = await response.Content.ReadAsStringAsync();
+
+// DOCUMENTS
+response = await client.PostAsync("https://hub.infomentor.se/Communication/Documents/GetDocumentsList", null);
+var documentsListJson = await response.Content.ReadAsStringAsync();
+
+// LINKS
+response = await client.PostAsync("https://hub.infomentor.se/Communication/Links/GetLinksList", null);
+var linksListJson = await response.Content.ReadAsStringAsync();
+
+// CALENDAR
+response = await client.PostAsync("https://hub.infomentor.se/calendarv2/calendarv2/getentries", new StringContent("{\"startDate\":\"2024/05/20\",\"endDate\":\"2024/07/07\"}"));
+var calendarJson = await response.Content.ReadAsStringAsync();
+
+// TIMETABLE TODO: NOT WORKING, Needs more headers?
+response = await client.PostAsync("https://hub.infomentor.se/TimeTable/TimeTable/GetTimeTable", new FormUrlEncodedContent( new Dictionary<string, string>
+{
+    { "UTCOffset", "-120"},
+    { "star", "2024/05/20" },
+    { "end", "2024/07/07" }
+}));
+var timetableJson = await response.Content.ReadAsStringAsync();
+
+// CLASSLIST
+response = await client.PostAsync("https://hub.infomentor.se/classlist/classlist/appData?_=090720241513", null);
+var classListJson = await response.Content.ReadAsStringAsync();
+
+// CLASSLISTITEM - STAFFMEMBER TODO: NOT WORKING, Needs more headers?
+response = await client.PostAsync("https://hub.infomentor.se/ClassList/classlist/GetStaff", new StringContent("{\"id\":\"744028\",\"establishmentId\":\"0000012345\"}"));
+var classListStaffJson = await response.Content.ReadAsStringAsync();
+
+// CLASSLISTITEM - PUPIL TODO: NOT WORKING, Needs more headers?
+response = await client.PostAsync("https://hub.infomentor.se/ClassList/classlist/GetPupil", new StringContent("{\"id\":\"953908\",\"establishmentId\":null}"));
+var classListPupilJson = await response.Content.ReadAsStringAsync();
+
+
+
+// ATTENDANCE
+
+
 
 var a = 2;
