@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -135,15 +137,18 @@ response = await client.PostAsync("https://hub.infomentor.se/Communication/Links
 var linksListJson = await response.Content.ReadAsStringAsync();
 
 // CALENDAR
-response = await client.PostAsync("https://hub.infomentor.se/calendarv2/calendarv2/getentries", new StringContent("{\"startDate\":\"2024/05/20\",\"endDate\":\"2024/07/07\"}"));
+response = await client.PostAsync("https://hub.infomentor.se/calendarv2/calendarv2/getentries", 
+    new StringContent("{\"startDate\":\"2024/05/20\",\"endDate\":\"2024/07/07\"}", 
+        Encoding.UTF8, 
+        MediaTypeHeaderValue.Parse("application/json")));
 var calendarJson = await response.Content.ReadAsStringAsync();
 
-// TIMETABLE TODO: NOT WORKING, Needs more headers?
-response = await client.PostAsync("https://hub.infomentor.se/TimeTable/TimeTable/GetTimeTable", new FormUrlEncodedContent( new Dictionary<string, string>
+// TIMETABLE 
+response = await client.PostAsync("https://hub.infomentor.se/timetable/timetable/gettimetablelist", new FormUrlEncodedContent( new Dictionary<string, string>
 {
-    { "UTCOffset", "-120"},
-    { "star", "2024/05/20" },
-    { "end", "2024/07/07" }
+    { "UTCOffset", "-120"}, // doesn't seem to do anything
+    { "start", "2024-06-10" },
+    { "end", "2024-06-15" }
 }));
 var timetableJson = await response.Content.ReadAsStringAsync();
 
@@ -151,12 +156,18 @@ var timetableJson = await response.Content.ReadAsStringAsync();
 response = await client.PostAsync("https://hub.infomentor.se/classlist/classlist/appData?_=090720241513", null);
 var classListJson = await response.Content.ReadAsStringAsync();
 
-// CLASSLISTITEM - STAFFMEMBER TODO: NOT WORKING, Needs more headers?
-response = await client.PostAsync("https://hub.infomentor.se/ClassList/classlist/GetStaff", new StringContent("{\"id\":\"744028\",\"establishmentId\":\"0000012345\"}"));
+// CLASSLISTITEM - STAFFMEMBER 
+response = await client.PostAsync("https://hub.infomentor.se/ClassList/classlist/GetStaff", 
+    new StringContent("{\"id\":\"744028\",\"establishmentId\":\"0000012345\"}",
+        Encoding.UTF8,
+        MediaTypeHeaderValue.Parse("application/json"))); ;
 var classListStaffJson = await response.Content.ReadAsStringAsync();
 
-// CLASSLISTITEM - PUPIL TODO: NOT WORKING, Needs more headers?
-response = await client.PostAsync("https://hub.infomentor.se/ClassList/classlist/GetPupil", new StringContent("{\"id\":\"953908\",\"establishmentId\":null}"));
+// CLASSLISTITEM - PUPIL 
+response = await client.PostAsync("https://hub.infomentor.se/ClassList/classlist/GetPupil", 
+    new StringContent("{\"id\":\"953908\",\"establishmentId\":null}",
+        Encoding.UTF8,
+        MediaTypeHeaderValue.Parse("application/json"))); ;
 var classListPupilJson = await response.Content.ReadAsStringAsync();
 
 
