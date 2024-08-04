@@ -173,7 +173,8 @@ var classListPupilJson = await response.Content.ReadAsStringAsync();
 
 
 // ATTENDANCE
-
+response = await client.PostAsync("https://hub.infomentor.se/attendance/attendance/appData?_=090720241513", null);
+var attendanceJson = await response.Content.ReadAsStringAsync();
 
 
 var a = 2;
